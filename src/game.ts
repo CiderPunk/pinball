@@ -6,7 +6,7 @@ import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 import { Scene } from "@babylonjs/core/scene";
 import { GridMaterial } from "@babylonjs/materials/grid/gridMaterial";
 import { AxesViewer } from "@babylonjs/core/Debug/axesViewer";
-import { IEntity, IGame } from "./interfaces";
+import { IEntity, IGame, ITable } from "./interfaces";
 import { Pointer } from "./helpers/pointer";
 import HavokPhysics from "@babylonjs/havok";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins"
@@ -18,6 +18,7 @@ import { PhysicsAggregate, PhysicsShapeType } from "@babylonjs/core/Physics"
 import "@babylonjs/core/Debug/debugLayer"; // Augments the scene with the debug methods
 import "@babylonjs/inspector"; // Injects a local ES6 version of the inspector to prevent
 import { InputManager } from "./input/InputManager";
+import { Table } from "./table";
 
 export class Game implements IGame{
   readonly engine: Engine;
@@ -30,6 +31,11 @@ export class Game implements IGame{
 
   readonly ents = new Array<IEntity>()
   inputManager: InputManager;
+  table: ITable;
+
+
+  readonly tableAngle = 6.5
+
   public constructor(element:string){
 
     // Get the canvas element from the DOM.
@@ -42,7 +48,7 @@ export class Game implements IGame{
     this.scene = new Scene(this.engine);
 
     // This creates and positions a free camera (non-mesh)
-    this.camera = new FreeCamera("camera1", new Vector3(0, 20, -30), this.scene);
+    this.camera = new FreeCamera("camera1", new Vector3(0, 1.5, 1.5), this.scene);
 
     // This targets the camera to scene origin
     this.camera.setTarget(Vector3.Zero());
@@ -64,13 +70,20 @@ export class Game implements IGame{
     this.ground = CreateGround('ground1', { width: 100, height: 100, subdivisions: 10 }, this.scene);
     this.ground.material = this.material;
 
-    const axes = new AxesViewer(this.scene, 10)
+    //const axes = new AxesViewer(this.scene, 10)
 
     this.inputManager = new InputManager(this);
 
     HavokPhysics().then((havok) => {
-      this.scene.enablePhysics(new Vector3(0,-9.81, 0), new HavokPlugin(true, havok));
+
+      const tableRad = this.tableAngle * (Math.PI / 180)
+      
+      this.scene.enablePhysics(new Vector3(0,Math.sin(tableRad) * 0.98, Math.cos(tableRad) * 0.98), new HavokPlugin(true, havok));
       const groundAggrergate = new PhysicsAggregate(this.ground, PhysicsShapeType.BOX, { mass:0}, this.scene)
+
+
+
+
     });
 
     
@@ -79,12 +92,22 @@ export class Game implements IGame{
       this.render()
     })
 
-
+/*
     new Pointer("X", this.scene, Color3.Red(), 1 ,new Vector3(0,0,0), new Vector3(5,0,0))
     new Pointer("Y", this.scene, Color3.Green(), 1 ,new Vector3(5,0,0), new Vector3(0,5,0))
     new Pointer("Z", this.scene, Color3.Blue(), 1 ,new Vector3(5,5,0), new Vector3(0,0,5))
     new Pointer("xyz", this.scene, Color3.Purple(), 1 ,new Vector3(0,0,0), new Vector3(5,5,5))
+
+*/
     this.scene.debugLayer.show();
+    this.table = new Table(this, "table.gltf")
+
+  }
+
+
+
+  startGame(){
+
 
 
   }

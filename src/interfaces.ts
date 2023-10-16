@@ -4,6 +4,7 @@ import { Scene } from "@babylonjs/core/scene";
 
 export interface IGame{
   scene:Scene
+  startGame():void
 }
 
 export interface IEntity{
@@ -16,6 +17,11 @@ export interface IInputManager{
   getCommand(name:string):IInputCommand
   registerCommands(commandSpecs: ICommandSepc[]):IInputCommand[]
   registerCommand(spec: ICommandSepc):IInputCommand
+}
+
+
+export interface ITable{
+
 }
 
 export type CommandAction  = (active:boolean,action:string)=>void;
