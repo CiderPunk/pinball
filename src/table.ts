@@ -5,6 +5,7 @@ import { Node } from "@babylonjs/core/node";
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
 import { PhysicsAggregate, PhysicsShapeType } from "@babylonjs/core/Physics/v2";
+import { Vector3 } from "@babylonjs/core/Maths/math";
 
 
 export class Table implements ITable{
@@ -14,8 +15,13 @@ export class Table implements ITable{
   readonly aggregates = new Array<PhysicsAggregate>()
   
   launcher?:AbstractMesh
-  
   shadowGenerator?: ShadowGenerator;
+
+
+  public launchPosition():Vector3{
+    return this.launcher?.position ?? Vector3.Zero()
+    
+  }
 
   public constructor(readonly owner:IGame, path:string){
     SceneLoader.Append("assets/", path, owner.scene, (scene)=>{ 
@@ -48,12 +54,6 @@ export class Table implements ITable{
       this.owner.startGame()
     })
   }
-
-  launch(){
-
-
-  }
-
 
   dispose(): void {
     this.aggregates.forEach(a=>a.dispose())

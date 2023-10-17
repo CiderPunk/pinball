@@ -1,4 +1,4 @@
-import { Vector2 } from "@babylonjs/core/Maths/math";
+import { Vector2, Vector3 } from "@babylonjs/core/Maths/math";
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { Scene } from "@babylonjs/core/scene";
 
@@ -21,7 +21,7 @@ export interface IInputManager{
 
 
 export interface ITable{
-
+  launchPosition():Vector3
 }
 
 export type CommandAction  = (active:boolean,action:string)=>void;

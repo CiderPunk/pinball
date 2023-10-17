@@ -19,6 +19,7 @@ import "@babylonjs/core/Debug/debugLayer"; // Augments the scene with the debug 
 import "@babylonjs/inspector"; // Injects a local ES6 version of the inspector to prevent
 import { InputManager } from "./input/InputManager";
 import { Table } from "./table";
+import { Ball } from "./ents/ball";
 
 export class Game implements IGame{
   readonly engine: Engine;
@@ -35,6 +36,7 @@ export class Game implements IGame{
 
 
   readonly tableAngle = 6.5
+  ball: any;
 
   public constructor(element:string){
 
@@ -77,13 +79,8 @@ export class Game implements IGame{
     HavokPhysics().then((havok) => {
 
       const tableRad = this.tableAngle * (Math.PI / 180)
-      
-      this.scene.enablePhysics(new Vector3(0,Math.sin(tableRad) * 0.98, Math.cos(tableRad) * 0.98), new HavokPlugin(true, havok));
+      this.scene.enablePhysics(new Vector3(0,-Math.cos(tableRad) * 0.98, Math.sin(tableRad) * 0.98), new HavokPlugin(true, havok));
       const groundAggrergate = new PhysicsAggregate(this.ground, PhysicsShapeType.BOX, { mass:0}, this.scene)
-
-
-
-
     });
 
     
@@ -92,13 +89,7 @@ export class Game implements IGame{
       this.render()
     })
 
-/*
-    new Pointer("X", this.scene, Color3.Red(), 1 ,new Vector3(0,0,0), new Vector3(5,0,0))
-    new Pointer("Y", this.scene, Color3.Green(), 1 ,new Vector3(5,0,0), new Vector3(0,5,0))
-    new Pointer("Z", this.scene, Color3.Blue(), 1 ,new Vector3(5,5,0), new Vector3(0,0,5))
-    new Pointer("xyz", this.scene, Color3.Purple(), 1 ,new Vector3(0,0,0), new Vector3(5,5,5))
 
-*/
     this.scene.debugLayer.show();
     this.table = new Table(this, "table.gltf")
 
@@ -107,7 +98,7 @@ export class Game implements IGame{
 
 
   startGame(){
-
+    this.ball = new Ball(this, this.table.launchPosition())
 
 
   }
