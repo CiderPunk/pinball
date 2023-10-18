@@ -181,7 +181,7 @@ export class InputManager implements IInputManager {
       document.addEventListener("keydown", (e:KeyboardEvent) =>{  
         if (!e.repeat) { 
           if (this.keyDown(e.key)){
-            e.preventDefault()
+            //e.preventDefault()
             e.stopImmediatePropagation()
           }
         }

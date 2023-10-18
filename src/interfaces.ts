@@ -19,9 +19,16 @@ export interface IInputManager{
   registerCommand(spec: ICommandSepc):IInputCommand
 }
 
+export interface IPaddle extends IEntity{
+  activate(isActive: boolean, side: string): void;
+
+}
 
 export interface ITable{
+  activatePaddles(isActive: boolean, side: string): void;
   launchPosition():Vector3
+
+
 }
 
 export type CommandAction  = (active:boolean,action:string)=>void;
