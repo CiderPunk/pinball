@@ -61,8 +61,6 @@ export class Paddle implements IPaddle{
     //body.setAngularDamping(10)
     //this.forcePoint = this.rootMesh.getAbsolutePosition().addInPlace(new Vector3(paddleType == PaddleType.Left ? -0.06 : 0.06, 0,0))
 
-
-
     this.body.startAsleep = false
   }
 
@@ -76,7 +74,5 @@ export class Paddle implements IPaddle{
     //this.body.applyForce(new Vector3(0,0,(this.isActive ? -500 : 500)), this.forcePoint)
     this.motor.setAxisMotorTarget(PhysicsConstraintAxis.ANGULAR_Y, (this.paddleType == PaddleType.Right ? -1 : 1) *  (this.isActive ? 20 : -20));
   }
-
-
 
 }

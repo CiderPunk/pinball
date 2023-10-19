@@ -1,10 +1,10 @@
 
 export const Constants = {
-  tableTilt: 8.5,
-  ballSize: 0.015,
+  tableTilt: 7,
+  ballSize: 0.0135 ,
   paddleMass: 3,
-  ballMass: 1,
-  ballFriction: 0.2,
+  ballMass:1,
+  ballFriction: 0.7  ,
   ballRestitution: 0.2,
   launchBase: 8,
   launchVariance: 4,
