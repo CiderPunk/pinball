@@ -17,11 +17,13 @@ export class Ball implements IEntity{
     this.rootMesh.position.set(-position.x, position.y, position.z)
 
     const shape = new PhysicsShapeSphere(Vector3.Zero(), Constants.ballSize, owner.scene)
-    shape.material =  {friction: 0.1, restitution: 0.3};
+    shape.material =  {friction:Constants.ballFriction, restitution: Constants.ballRestitution};
     shape.filterMembershipMask = CollisionMask.Ball
+    shape.filterCollideMask = CollisionMask.Paddle | CollisionMask.Wall |CollisionMask.Ball
+
     const body = new PhysicsBody(this.rootMesh,PhysicsMotionType.DYNAMIC, false, owner.scene)
     body.shape = shape
-    body.setMassProperties({ mass: 1})
+    body.setMassProperties({ mass: Constants.ballMass})
 
     this.body = body;
   }

@@ -1,18 +1,14 @@
 import { FreeCamera } from "@babylonjs/core/Cameras/freeCamera";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
-import { Color3, Vector3 } from "@babylonjs/core/Maths/math";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 import { Scene } from "@babylonjs/core/scene";
 import { GridMaterial } from "@babylonjs/materials/grid/gridMaterial";
-import { AxesViewer } from "@babylonjs/core/Debug/axesViewer";
 import { IEntity, IGame, ITable } from "./interfaces";
-import { Pointer } from "./helpers/pointer";
 import HavokPhysics from "@babylonjs/havok";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins"
 import "@babylonjs/core/Physics/v2/physicsEngineComponent"
 import { Constants } from "./constants";
-import { PhysicsAggregate, PhysicsShapeType } from "@babylonjs/core/Physics"
 
 //spector start
 import "@babylonjs/core/Debug/debugLayer"; // Augments the scene with the debug methods
@@ -20,8 +16,8 @@ import "@babylonjs/inspector"; // Injects a local ES6 version of the inspector t
 import { InputManager } from "./input/InputManager";
 import { Table } from "./table";
 import { Ball } from "./ents/ball";
-import { Camera } from "@babylonjs/core/Cameras/camera";
 import { TargetCamera } from "@babylonjs/core/Cameras/targetCamera";
+import { Vector3 } from "@babylonjs/core/Maths/math";
 
 export class Game implements IGame{
   readonly engine: Engine;
@@ -30,15 +26,13 @@ export class Game implements IGame{
   sphere: any;
   material: any;
   player?: IEntity;
-
   readonly ents = new Array<IEntity>()
   inputManager: InputManager;
   table?:ITable;
   readonly balls = new Array<IEntity>;
 
-
-  ball: any;
   camera: TargetCamera;
+  freeCamera: FreeCamera;
 
   public constructor(element:string){
 
@@ -53,12 +47,18 @@ export class Game implements IGame{
 
     // This creates and positions a free camera (non-mesh)
     const camera = new TargetCamera("camera1", new Vector3(0, 1.6, 1.8  ), this.scene);
-
     // This targets the camera to scene origin
     camera.setTarget(Vector3.Zero());
     camera.fov = 0.5
 
 
+
+    const freeCam = new FreeCamera("camera1", new Vector3(0, 1.6, 1.8  ), this.scene);
+    freeCam.setTarget(Vector3.Zero());
+    freeCam.fov = 0.5
+    freeCam.attachControl(canvas, true);
+
+    this.freeCamera = freeCam
     this.camera = camera
     // This attaches the camera to the canvas
     //camera.attachControl(canvas, true);
@@ -82,10 +82,25 @@ export class Game implements IGame{
     this.inputManager = new InputManager(this);
 
     this.inputManager.registerCommands([
+      { name:"Camera Toggle", action:"camswitch", defaultControls:["F6"] },
+      { name:"Debug Layer", action:"debuglayer", defaultControls:["F2"] },
       { name:"Shoot", action:"shoot", defaultControls:[" "] },
       { name:"Left Flipper", action:"lflip", defaultControls:["ArrowLeft", "z"] },
       { name:"Right Flipper", action:"rflip", defaultControls:["ArrowRight", "m"] },
     ])
+
+    this.inputManager.getCommand("Debug Layer").Subscribe((isActive:boolean)=>{
+      if (isActive){
+        console.log("show debug")
+        this.scene.debugLayer.isVisible() ? this.scene.debugLayer.hide() : this.scene.debugLayer.show()
+      }
+    })
+
+    this.inputManager.getCommand("Camera Toggle").Subscribe((isActive:boolean)=>{
+      if (isActive){
+        this.scene.activeCamera = (this.scene.activeCamera === this.camera ? this.freeCamera : this.camera )
+      }
+    })
 
 
     HavokPhysics().then((havok) => {
@@ -116,7 +131,7 @@ export class Game implements IGame{
       if (isActive){
         const ball = new Ball(this, this.table!.launchPosition())
         this.balls.push(ball)
-        ball.launch(new Vector3(0,0,8+(Math.random() * 4)))
+        ball.launch(new Vector3(0,0,Constants.launchBase+(Math.random() * Constants.launchVariance)))
       }
     })
 
@@ -132,20 +147,20 @@ export class Game implements IGame{
 
   render(){
     
-
-    if (this.balls.length > 0){
+    if (Constants.ballTrack && this.balls.length > 0){
       const target = new Vector3(0,0,0)
       this.balls.forEach((b,i)=>{
         target.addInPlace(b.rootMesh.position)
       })
       target.divideInPlace(new Vector3(this.balls.length,this.balls.length,this.balls.length))
-   //   this.camera.setTarget(target)
+      this.camera.setTarget(target)
     }
 
-  
     const dT = this.engine.getDeltaTime();
-    this.ents.forEach(e=>{ e.update(dT)})
+    if (this.table){
+      this.table.update(dT)
+    }
+    //this.ents.forEach(e=>{ e.update(dT)})
     this.scene.render()
-
   }
 }

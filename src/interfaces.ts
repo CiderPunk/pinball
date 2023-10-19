@@ -25,10 +25,9 @@ export interface IPaddle extends IEntity{
 }
 
 export interface ITable{
+  update(dT: number): unknown;
   activatePaddles(isActive: boolean, side: string): void;
   launchPosition():Vector3
-
-
 }
 
 export type CommandAction  = (active:boolean,action:string)=>void;

@@ -9,6 +9,7 @@ import { Vector3 } from "@babylonjs/core/Maths/math";
 import { Plunger } from "./ents/plunger";
 import { Paddle } from "./ents/paddle";
 import { CollisionMask } from "./constants";
+import { PaddleType } from "./enums";
 
 
 export class Table implements ITable{
@@ -43,6 +44,7 @@ export class Table implements ITable{
       outerContainer.getChildMeshes().forEach((mesh)=>{
         const agg = new PhysicsAggregate(mesh, PhysicsShapeType.MESH, {mass:0}, scene)
         agg.shape.filterCollideMask = CollisionMask.Ball
+        agg.shape.filterMembershipMask = CollisionMask.Wall
         if (mesh.name == "floor"){
           this.floorBody = agg  
         }
@@ -56,6 +58,7 @@ export class Table implements ITable{
       furnitureContainer.getChildMeshes().forEach((mesh)=>{
         const agg = new PhysicsAggregate(mesh, PhysicsShapeType.MESH, {mass:0}, scene)
         agg.shape.filterCollideMask = CollisionMask.Ball
+        agg.shape.filterMembershipMask = CollisionMask.Wall
         this.aggregates.push(agg)
       })
 
@@ -69,10 +72,10 @@ export class Table implements ITable{
       paddleContainer.getChildMeshes().forEach((mesh)=>{
         if (mesh.name.includes("paddle")){
           if (mesh.name.includes("left")){
-            this.leftPaddles.push(new Paddle(owner, mesh, "left", this.floorBody!))
+            this.leftPaddles.push(new Paddle(owner, mesh, PaddleType.Left, this.floorBody!))
           }
           else if (mesh.name.includes("right")){
-            this.rightPaddles.push(new Paddle(owner, mesh, "right", this.floorBody!)) 
+            this.rightPaddles.push(new Paddle(owner, mesh, PaddleType.Right, this.floorBody!)) 
           }
         
         }
@@ -82,9 +85,16 @@ export class Table implements ITable{
       if (!this.launcher){
         throw new Error("launcher not found")
       }
+      
+    
       this.owner.startGame()
     })
   }
+  update(dT: number): void {
+    this.leftPaddles.forEach(p=>p.update(dT))
+    this.rightPaddles.forEach(p=>p.update(dT))
+  }
+
   activatePaddles(isActive: boolean, side: string): void {
     const paddles = side === "left" ? this.leftPaddles : this.rightPaddles
     paddles.forEach(p=>p.activate(isActive, side))
