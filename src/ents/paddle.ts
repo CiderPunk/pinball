@@ -69,11 +69,12 @@ export class Paddle implements IPaddle{
   activate(isActive: boolean): void {
     //this.body.setAngularVelocity(Vector3.Backward())
     this.isActive = isActive
+    this.body.applyForce(Vector3.ZeroReadOnly, Vector3.ZeroReadOnly)
   }
 
   update(dT: number): void {
     //this.body.applyForce(new Vector3(0,0,(this.isActive ? -500 : 500)), this.forcePoint)
-    this.motor.setAxisMotorTarget(PhysicsConstraintAxis.ANGULAR_Y, this.isActive ? 20 : -20);
+    this.motor.setAxisMotorTarget(PhysicsConstraintAxis.ANGULAR_Y, (this.paddleType == PaddleType.Right ? -1 : 1) *  (this.isActive ? 20 : -20));
   }
 
 
