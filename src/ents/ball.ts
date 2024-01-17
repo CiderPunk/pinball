@@ -4,6 +4,8 @@ import { Vector3 } from "@babylonjs/core/Maths/math";
 import { CreateIcoSphere } from "@babylonjs/core/Meshes/Builders/icoSphereBuilder"
 import { PhysicsBody, PhysicsMotionType, PhysicsShapeSphere } from "@babylonjs/core/Physics";
 import { CollisionMask, Constants } from "../constants";
+import { Material } from "@babylonjs/core/Materials/material";
+import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
 
 
 export class Ball implements IEntity{
@@ -24,6 +26,11 @@ export class Ball implements IEntity{
     const body = new PhysicsBody(this.rootMesh,PhysicsMotionType.DYNAMIC, false, owner.scene)
     body.shape = shape
     body.setMassProperties({ mass: Constants.ballMass})
+
+    const mat = new StandardMaterial("ballmat", owner.scene)
+mat.wireframe = true
+    this.rootMesh.material = mat
+
 
     this.body = body;
   }

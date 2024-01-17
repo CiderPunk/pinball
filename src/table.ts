@@ -8,7 +8,7 @@ import { PhysicsAggregate, PhysicsShapeType } from "@babylonjs/core/Physics/v2";
 import { Vector3 } from "@babylonjs/core/Maths/math";
 import { Plunger } from "./ents/plunger";
 import { Paddle } from "./ents/paddle";
-import { CollisionMask } from "./constants";
+import { CollisionMask, Constants } from "./constants";
 import { PaddleType } from "./enums";
 
 
@@ -45,6 +45,7 @@ export class Table implements ITable{
         const agg = new PhysicsAggregate(mesh, PhysicsShapeType.MESH, {mass:0}, scene)
         agg.shape.filterCollideMask = CollisionMask.Ball
         agg.shape.filterMembershipMask = CollisionMask.Wall
+        agg.shape.material = {friction:Constants.floorFriction, restitution: Constants.floorRestitution}
         if (mesh.name == "floor"){
           this.floorBody = agg  
         }
@@ -77,7 +78,6 @@ export class Table implements ITable{
           else if (mesh.name.includes("right")){
             this.rightPaddles.push(new Paddle(owner, mesh, PaddleType.Right, this.floorBody!)) 
           }
-        
         }
       })
 

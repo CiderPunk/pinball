@@ -4,12 +4,14 @@ export const Constants = {
   ballSize: 0.0135 ,
   paddleMass: 3,
   ballMass:1,
-  ballFriction: 0.7  ,
+  ballFriction: 0.001,
   ballRestitution: 0.2,
   launchBase: 8,
   launchVariance: 4,
   ballTrack:false,
-  paddleTravel:0.3*Math.PI
+  paddleTravel:0.3*Math.PI,
+  floorRestitution:0.2,
+  floorFriction:0.1,
 
 } as const
 
