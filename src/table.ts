@@ -37,11 +37,17 @@ export class Table implements ITable{
         throw new Error("Root node not found")
       }
 
-      const outerContainer = this.loadedRoot.getChildren().find(n=>n.id=="outer")
-      if (!outerContainer){
+      const tableContainer = this.loadedRoot.getChildren().find(n=>n.id=="table")
+      if (!tableContainer){
         throw new Error("no table container found")
       }
-      outerContainer.getChildMeshes().forEach((mesh)=>{
+
+      const collisionContainer = tableContainer.getChildren().find(n=>n.id === "collision")
+      if (!collisionContainer){
+        throw new Error("no collision container found")
+      }
+
+      collisionContainer.getChildMeshes().forEach((mesh)=>{
         const agg = new PhysicsAggregate(mesh, PhysicsShapeType.MESH, {mass:0}, scene)
         agg.shape.filterCollideMask = CollisionMask.Ball
         agg.shape.filterMembershipMask = CollisionMask.Wall
@@ -52,25 +58,12 @@ export class Table implements ITable{
         this.aggregates.push(agg)
       })
 
-      const furnitureContainer = this.loadedRoot.getChildren().find(n=>n.id=="furniture")
-      if (!furnitureContainer){
-        throw new Error("no furniture container found")
+      const entityContainer = tableContainer.getChildren().find(n=>n.id === "ents")
+      if (!entityContainer){
+        throw new Error("no entity container found")
       }
-      furnitureContainer.getChildMeshes().forEach((mesh)=>{
-        const agg = new PhysicsAggregate(mesh, PhysicsShapeType.MESH, {mass:0}, scene)
-        agg.shape.filterCollideMask = CollisionMask.Ball
-        agg.shape.filterMembershipMask = CollisionMask.Wall
-        this.aggregates.push(agg)
-      })
-
-      const plungerMesh = this.loadedRoot.getChildren(undefined, false).find(n=>n.id=="plunger") as AbstractMesh
-      this.plunger = new Plunger(owner, plungerMesh)
-
-      const paddleContainer = this.loadedRoot.getChildren().find(n=>n.id=="interactive")
-      if (!paddleContainer){
-        throw new Error("no paddle container found")
-      }
-      paddleContainer.getChildMeshes().forEach((mesh)=>{
+  
+      entityContainer.getChildMeshes().forEach((mesh)=>{
         if (mesh.name.includes("paddle")){
           if (mesh.name.includes("left")){
             this.leftPaddles.push(new Paddle(owner, mesh, PaddleType.Left, this.floorBody!))
@@ -81,7 +74,7 @@ export class Table implements ITable{
         }
       })
 
-      this.launcher = this.loadedRoot.getChildren().find(n=>n.id=="launch") as AbstractMesh
+      this.launcher = tableContainer.getChildren().find(n=>n.id=="launch") as AbstractMesh
       if (!this.launcher){
         throw new Error("launcher not found")
       }

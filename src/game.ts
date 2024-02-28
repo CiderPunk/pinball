@@ -122,7 +122,7 @@ export class Game implements IGame{
 
 
   initScene(){
-    this.table = new Table(this, "table.gltf")
+    this.table = new Table(this, "table2.gltf")
   }
 
 
