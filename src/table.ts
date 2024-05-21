@@ -55,6 +55,10 @@ export class Table implements ITable{
         if (mesh.name == "floor"){
           this.floorBody = agg  
         }
+        if (mesh.name == "glass"){
+          mesh.setEnabled(false)
+
+        }
         this.aggregates.push(agg)
       })
 

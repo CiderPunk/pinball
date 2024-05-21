@@ -59,7 +59,8 @@ export class Paddle implements IPaddle{
 
     floor.body.addConstraint(body, this.motor) 
     this.motor.setAxisMotorType(PhysicsConstraintAxis.ANGULAR_Y, PhysicsConstraintMotorType.VELOCITY);
-    this.motor.setAxisMotorMaxForce(PhysicsConstraintAxis.ANGULAR_Y,10);
+    this.motor.setAxisMotorMaxForce(PhysicsConstraintAxis.ANGULAR_Y,Constants.PaddleMaxForce);
+
     //body.setAngularDamping(10)
     //this.forcePoint = this.rootMesh.getAbsolutePosition().addInPlace(new Vector3(paddleType == PaddleType.Left ? -0.06 : 0.06, 0,0))
 
@@ -74,7 +75,7 @@ export class Paddle implements IPaddle{
 
   update(dT: number): void {
     //this.body.applyForce(new Vector3(0,0,(this.isActive ? -500 : 500)), this.forcePoint)
-    this.motor.setAxisMotorTarget(PhysicsConstraintAxis.ANGULAR_Y, (this.paddleType == PaddleType.Right ? -1 : 1) *  (this.isActive ? 20 : -20));
+    this.motor.setAxisMotorTarget(PhysicsConstraintAxis.ANGULAR_Y, (this.paddleType == PaddleType.Right ? -1 : 1) *  (this.isActive ? 1 : -1) * Constants.PaaddleMotorTarget);
   }
 
 }
