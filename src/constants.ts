@@ -12,7 +12,6 @@ export const Constants = {
   paddleTravel:0.3*Math.PI,
   floorRestitution:0.2,
   floorFriction:0.1,
-  paddleTravel:0.3*Math.PI,
   PaddleMaxForce:10,
   PaaddleMotorTarget:30,
 

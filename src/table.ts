@@ -5,11 +5,12 @@ import { Node } from "@babylonjs/core/node";
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
 import { PhysicsAggregate, PhysicsShapeType } from "@babylonjs/core/Physics/v2";
-import { Vector3 } from "@babylonjs/core/Maths/math";
+import { Color3, Vector3 } from "@babylonjs/core/Maths/math";
 import { Plunger } from "./ents/plunger";
 import { Paddle } from "./ents/paddle";
 import { CollisionMask, Constants } from "./constants";
 import { PaddleType } from "./enums";
+import { Pointer } from "./helpers/pointer";
 
 
 export class Table implements ITable{
@@ -82,6 +83,10 @@ export class Table implements ITable{
       if (!this.launcher){
         throw new Error("launcher not found")
       }
+
+      
+
+//new Pointer("paddle1", owner.scene, Color3.Red(), 1,this.launchPosition(), Vector3.Up())
       
     
       this.owner.startGame()
