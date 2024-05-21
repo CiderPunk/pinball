@@ -27,7 +27,9 @@ export class Paddle implements IPaddle{
 
     const matrix = floor.transformNode.computeWorldMatrix(true)
     const pivotA = Vector3.TransformCoordinates(rootMesh.getAbsolutePosition(), matrix)
-        
+    //const pivotA = Vector3.TransformCoordinates(rootMesh.position, matrix)
+    //const pivotA = rootMesh.getAbsolutePosition()
+    //const pivotA = rootMesh.position;
     switch(this.paddleType){
 
       case PaddleType.Left:

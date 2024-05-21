@@ -83,6 +83,7 @@ export class Table implements ITable{
       this.owner.startGame()
     })
   }
+  
   update(dT: number): void {
     this.leftPaddles.forEach(p=>p.update(dT))
     this.rightPaddles.forEach(p=>p.update(dT))

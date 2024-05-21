@@ -53,7 +53,7 @@ export class Game implements IGame{
 
 
 
-    const freeCam = new FreeCamera("camera1", new Vector3(0, 1.6, 1.8  ), this.scene);
+    const freeCam = new FreeCamera("freecamera", new Vector3(0, 1.6, 1.8  ), this.scene);
     freeCam.setTarget(Vector3.Zero());
     freeCam.fov = 0.5
     freeCam.attachControl(canvas, true);
