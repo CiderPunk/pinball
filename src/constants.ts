@@ -3,7 +3,7 @@ export const Constants = {
   tableTilt: 7,
   ballSize: 0.0135 ,
   paddleMass: 3,
-  ballMass:1,
+  ballMass:2,
   ballFriction: 0.001,
   ballRestitution: 0.2,
   launchBase: 8,
@@ -14,7 +14,10 @@ export const Constants = {
   floorFriction:0.1,
   PaddleMaxForce:10,
   PaaddleMotorTarget:30,
-
+  wallFriction:0.1,
+  wallRestitution:0.1,
+  bumperFriction:0.1,
+  bumperRestitution:0.2,
 } as const
 
 
@@ -22,4 +25,5 @@ export enum CollisionMask{
   Wall = 1 << 0,
   Paddle = 1 << 1,
   Ball = 1 << 2,
+  Bumper = 1 << 3,
 }

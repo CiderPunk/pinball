@@ -21,14 +21,15 @@ export class Ball implements IEntity{
     const shape = new PhysicsShapeSphere(Vector3.Zero(), Constants.ballSize, owner.scene)
     shape.material =  {friction:Constants.ballFriction, restitution: Constants.ballRestitution};
     shape.filterMembershipMask = CollisionMask.Ball
-    shape.filterCollideMask = CollisionMask.Paddle | CollisionMask.Wall |CollisionMask.Ball
+    shape.filterCollideMask = CollisionMask.Paddle | CollisionMask.Wall |CollisionMask.Ball | CollisionMask.Bumper
 
     const body = new PhysicsBody(this.rootMesh,PhysicsMotionType.DYNAMIC, false, owner.scene)
     body.shape = shape
     body.setMassProperties({ mass: Constants.ballMass})
 
     const mat = new StandardMaterial("ballmat", owner.scene)
-mat.wireframe = true
+  
+    //mat.wireframe = true
     this.rootMesh.material = mat
 
 

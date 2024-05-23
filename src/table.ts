@@ -1,6 +1,6 @@
 
 import { SceneLoader } from "@babylonjs/core/Loading/sceneLoader";
-import { IGame, IPaddle, ITable } from "./interfaces";
+import { IEntity, IGame, IPaddle, ITable } from "./interfaces";
 import { Node } from "@babylonjs/core/node";
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { ShadowGenerator } from "@babylonjs/core/Lights/Shadows/shadowGenerator";
@@ -11,6 +11,7 @@ import { Paddle } from "./ents/paddle";
 import { CollisionMask, Constants } from "./constants";
 import { PaddleType } from "./enums";
 import { Pointer } from "./helpers/pointer";
+import { Bumper } from "./ents/bumper";
 
 
 export class Table implements ITable{
@@ -22,6 +23,8 @@ export class Table implements ITable{
   shadowGenerator?: ShadowGenerator;
   plunger?:Plunger
 
+
+  entities = new Array<IEntity>()
   leftPaddles = new Array<IPaddle>()
   rightPaddles = new Array<IPaddle>()
   floorBody?: PhysicsAggregate;
@@ -76,6 +79,12 @@ export class Table implements ITable{
           else if (mesh.name.includes("right")){
             this.rightPaddles.push(new Paddle(owner, mesh, PaddleType.Right, this.floorBody!)) 
           }
+        }
+
+
+        if (mesh.name.includes("bumper")){
+          this.entities.push(new Bumper(owner, mesh));
+
         }
       })
 
