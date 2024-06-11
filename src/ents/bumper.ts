@@ -14,14 +14,16 @@ export class Bumper implements IEntity{
 
     const sizes = mesh.getHierarchyBoundingVectors()
     const diameter = sizes.max.x - sizes.min.x
-    const shape = new PhysicsShapeCylinder(mesh.position, mesh.position.add(Vector3.Up().scale(2)), diameter / 2, owner.scene)
+    //const shape = new PhysicsShapeCylinder(mesh.position, mesh.position.add(Vector3.Up().scale(-0.1)), diameter / 2, owner.scene)
+    const shape = new PhysicsShapeCylinder(new Vector3(0,-0.05,0), new Vector3(0,0,0), diameter  / 2, owner.scene)
+    
     shape.material =  {friction:Constants.bumperFriction, restitution: Constants.bumperRestitution};
     shape.filterMembershipMask = CollisionMask.Bumper
     shape.filterCollideMask = CollisionMask.Ball 
 
     const body = new PhysicsBody(this.rootMesh,PhysicsMotionType.STATIC, false, owner.scene)
     body.shape = shape
-    body.setMassProperties({ mass: Constants.ballMass})
+    body.setMassProperties({ mass: Constants.ballMass })
     this.body = body
 
   }
