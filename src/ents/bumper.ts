@@ -1,8 +1,9 @@
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { IEntity, IGame } from "../interfaces";
 import { PhysicsBody, PhysicsMotionType, PhysicsShapeCylinder } from "@babylonjs/core/Physics";
-import { Vector3 } from "@babylonjs/core/Maths/math";
+import { Color3, Vector3 } from "@babylonjs/core/Maths/math";
 import { CollisionMask, Constants } from "../constants";
+import { Pointer } from "../helpers/pointer";
 
 export class Bumper implements IEntity{
 
@@ -26,6 +27,16 @@ export class Bumper implements IEntity{
     body.setMassProperties({ mass: Constants.ballMass })
     this.body = body
 
+
+    body.setCollisionCallbackEnabled(true);
+    const observable = body.getCollisionObservable();
+    const observer = observable.add((event)=>{
+      const center = event.collidedAgainst.getObjectCenterWorld()
+      const diff = center.subtract(this.body.getObjectCenterWorld())
+      diff.normalize();
+      event.collidedAgainst.applyImpulse(diff.scale(2),center)
+      new Pointer("paddle1", owner.scene, Color3.Blue(), 10,center, Vector3.Up())
+    });
   }
 
 
