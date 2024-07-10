@@ -105,6 +105,8 @@ export class Table implements ITable{
   update(dT: number): void {
     this.leftPaddles.forEach(p=>p.update(dT))
     this.rightPaddles.forEach(p=>p.update(dT))
+
+    this.entities.forEach(p=>p.update(dT))
   }
 
   activatePaddles(isActive: boolean, side: string): void {

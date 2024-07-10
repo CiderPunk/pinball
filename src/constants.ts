@@ -1,6 +1,6 @@
 
 export const Constants = {
-  tableTilt: 7,
+  tableTilt: 9,
   ballSize: 0.0135 ,
   paddleMass: 3,
   ballMass:2,
@@ -18,6 +18,8 @@ export const Constants = {
   wallRestitution:0.1,
   bumperFriction:0.1,
   bumperRestitution:0.2,
+  bumperTriggerDelay:60,
+  bumperImpulse:10,
 } as const
 
 

@@ -56,6 +56,8 @@ export class Game implements IGame{
     const freeCam = new FreeCamera("freecamera", new Vector3(0, 1.6, 1.8  ), this.scene);
     freeCam.setTarget(Vector3.Zero());
     freeCam.fov = 0.5
+    freeCam.speed = 0.05
+    freeCam.minZ = 0.01
     freeCam.attachControl(canvas, true);
 
     this.freeCamera = freeCam
@@ -117,7 +119,7 @@ export class Game implements IGame{
     })
 
 
-    //this.scene.debugLayer.show();
+    //this.scene.debugLayer.show(); 
   }
 
 
