@@ -19,7 +19,7 @@ export const Constants = {
   bumperFriction:0.1,
   bumperRestitution:0.2,
   bumperTriggerDelay:60,
-  bumperImpulse:10,
+  bumperStrength:1.2,
 } as const
 
 
