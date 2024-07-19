@@ -3,7 +3,8 @@ import { IEntity, IGame } from "../interfaces";
 import { PhysicsBody, PhysicsMotionType, PhysicsShapeCylinder } from "@babylonjs/core/Physics";
 import { Color3, Vector3 } from "@babylonjs/core/Maths/math";
 import { CollisionMask, Constants } from "../constants";
-import { Pointer } from "../helpers/pointer";
+//import { Pointer } from "../helpers/pointer";
+//import { BoundingInfo } from "@babylonjs/core/Culling/boundingInfo";
 
 export class Bumper implements IEntity{
 
@@ -18,7 +19,7 @@ export class Bumper implements IEntity{
   public constructor( owner:IGame, mesh:AbstractMesh){
     this.rootMesh = mesh
 
-    
+   // BoundingInfo bounds = mesh.getBoundingInfo();
     const sizes = mesh.getHierarchyBoundingVectors()
     //this.forcePointer = new Pointer("paddle1", owner.scene, Color3.Blue(), 10, sizes.max, Vector3.Up())
     //this.collisionCentrePointer = new Pointer("paddle1", owner.scene, Color3.Red(), 10, sizes.max, Vector3.Up())
@@ -34,7 +35,7 @@ export class Bumper implements IEntity{
 
     const body = new PhysicsBody(this.rootMesh,PhysicsMotionType.STATIC, false, owner.scene)
     body.shape = shape
-    body.setMassProperties({ mass: Constants.ballMass })
+    body.setMassProperties({ mass: 0 })
     this.body = body
 
 

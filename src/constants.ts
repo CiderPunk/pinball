@@ -4,7 +4,7 @@ export const Constants = {
   ballSize: 0.0135 ,
   paddleMass: 3,
   ballMass:2,
-  ballFriction: 0.001,
+  ballFriction: 0.0001,
   ballRestitution: 0.2,
   launchBase: 8,
   launchVariance: 4,
@@ -20,6 +20,11 @@ export const Constants = {
   bumperRestitution:0.2,
   bumperTriggerDelay:60,
   bumperStrength:1.2,
+  KickerInfluence:0.4,
+  KickerStrength:1.1,
+  KickerTriggerDelay:60,
+
+
 } as const
 
 
@@ -28,4 +33,7 @@ export enum CollisionMask{
   Paddle = 1 << 1,
   Ball = 1 << 2,
   Bumper = 1 << 3,
+  Kicker = 1 << 4,
+  Trigger = 1 << 5,
+  BallMask = Ball | Wall | Paddle | Bumper | Kicker | Trigger,
 }

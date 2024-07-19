@@ -1,5 +1,6 @@
 import { Vector2, Vector3 } from "@babylonjs/core/Maths/math";
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
+import { PhysicsBody } from "@babylonjs/core/Physics";
 import { Scene } from "@babylonjs/core/scene";
 
 export interface IGame{
@@ -11,6 +12,12 @@ export interface IEntity{
   rootMesh:AbstractMesh
   update(dT:number):void
 }
+
+export interface ITrigger{
+  onTriggerExit(collider: PhysicsBody): void;
+  onTriggerEnter(collider: PhysicsBody): void;
+}
+
 
 export interface IInputManager{
   bind(keyCode:string, commandName:string):void

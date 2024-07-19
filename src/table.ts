@@ -12,6 +12,7 @@ import { CollisionMask, Constants } from "./constants";
 import { PaddleType } from "./enums";
 import { Pointer } from "./helpers/pointer";
 import { Bumper } from "./ents/bumper";
+import { Kicker } from "./ents/kicker";
 
 
 export class Table implements ITable{
@@ -80,12 +81,14 @@ export class Table implements ITable{
             this.rightPaddles.push(new Paddle(owner, mesh, PaddleType.Right, this.floorBody!)) 
           }
         }
-
-
         if (mesh.name.includes("bumper")){
           this.entities.push(new Bumper(owner, mesh));
-
         }
+
+        if (mesh.name.includes("kick")){
+          this.entities.push(new Kicker(owner, mesh));
+        }
+
       })
 
       this.launcher = tableContainer.getChildren().find(n=>n.id=="launch") as AbstractMesh
@@ -93,11 +96,9 @@ export class Table implements ITable{
         throw new Error("launcher not found")
       }
 
-      
 
-//new Pointer("paddle1", owner.scene, Color3.Red(), 1,this.launchPosition(), Vector3.Up())
-      
-    
+
+
       this.owner.startGame()
     })
   }

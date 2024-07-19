@@ -4,7 +4,7 @@ import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
 import { CreateGround } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 import { Scene } from "@babylonjs/core/scene";
 import { GridMaterial } from "@babylonjs/materials/grid/gridMaterial";
-import { IEntity, IGame, ITable } from "./interfaces";
+import { IEntity, IGame, ITable, ITrigger } from "./interfaces";
 import HavokPhysics from "@babylonjs/havok";
 import { HavokPlugin } from "@babylonjs/core/Physics/v2/Plugins"
 import "@babylonjs/core/Physics/v2/physicsEngineComponent"
@@ -18,6 +18,7 @@ import { Table } from "./table";
 import { Ball } from "./ents/ball";
 import { TargetCamera } from "@babylonjs/core/Cameras/targetCamera";
 import { Vector3 } from "@babylonjs/core/Maths/math";
+import { PhysicsEventType } from "@babylonjs/core/Physics";
 
 export class Game implements IGame{
   readonly engine: Engine;
@@ -104,15 +105,37 @@ export class Game implements IGame{
       }
     })
 
-
     HavokPhysics().then((havok) => {
+
       const tableRad = Constants.tableTilt * (Math.PI / 180)
-      this.scene.enablePhysics(new Vector3(0,-Math.cos(tableRad) * 0.98, Math.sin(tableRad) * 0.98), new HavokPlugin(true, havok));
-     // const groundAggrergate = new PhysicsAggregate(this.ground, PhysicsShapeType.BOX, { mass:0 }, this.scene)
+      const gravityVector = new Vector3(0,-Math.cos(tableRad) * 0.98, Math.sin(tableRad) * 0.98)
+      const havokPlugin =  new HavokPlugin(true, havok)
+      this.scene.enablePhysics(gravityVector,havokPlugin);
+      // const groundAggrergate = new PhysicsAggregate(this.ground, PhysicsShapeType.BOX, { mass:0 }, this.scene)
       this.initScene()
+
+
+      const observable = havokPlugin.onTriggerCollisionObservable;
+      const observer = observable.add((collisionEvent)=>{
+        if (collisionEvent.type === PhysicsEventType.TRIGGER_ENTERED){
+          const owner = collisionEvent.collidedAgainst.transformNode.metadata.owner as ITrigger
+          if (owner){
+            owner.onTriggerEnter(collisionEvent.collider)
+          }
+        }
+
+        if (collisionEvent.type === PhysicsEventType.TRIGGER_EXITED){
+          const owner = collisionEvent.collidedAgainst.transformNode.metadata.owner as ITrigger
+          if (owner){
+            owner.onTriggerExit(collisionEvent.collider)
+          }
+        }
+
+      })
+
+      
     });
 
-    
     // Render every frame
     this.engine.runRenderLoop(() => {
       this.render()
