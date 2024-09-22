@@ -1,7 +1,8 @@
 
 export const Constants = {
-  tableTilt: 9,
+  tableTilt: 7,
   ballSize: 0.0135 ,
+ //ballSize: 0.005 ,
   paddleMass: 3,
   ballMass:3,
   ballFriction: 0.0001,
