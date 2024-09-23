@@ -79,6 +79,7 @@ export class Game implements IGame{
     // Our built-in 'ground' shape.
     this.ground = CreateGround('ground1', { width: 100, height: 100, subdivisions: 10 }, this.scene);
     this.ground.material = this.material;
+    this.ground.position.z+=10;
 
     //const axes = new AxesViewer(this.scene, 10)
 
@@ -88,8 +89,8 @@ export class Game implements IGame{
       { name:"Camera Toggle", action:"camswitch", defaultControls:["F6"] },
       { name:"Debug Layer", action:"debuglayer", defaultControls:["F2"] },
       { name:"Shoot", action:"shoot", defaultControls:[" "] },
-      { name:"Left Flipper", action:"lflip", defaultControls:["ArrowLeft", "z"] },
-      { name:"Right Flipper", action:"rflip", defaultControls:["ArrowRight", "m"] },
+      { name:"Left Flipper", action:"lflip", defaultControls:["ArrowLeft", "z", "Z"] },
+      { name:"Right Flipper", action:"rflip", defaultControls:["ArrowRight", "m", "M"] },
     ])
 
     this.inputManager.getCommand("Debug Layer").Subscribe((isActive:boolean)=>{

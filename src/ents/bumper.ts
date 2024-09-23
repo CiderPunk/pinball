@@ -27,7 +27,7 @@ export class Bumper implements IEntity{
     
     const diameter = sizes.max.x - sizes.min.x
     //const shape = new PhysicsShapeCylinder(mesh.position, mesh.position.add(Vector3.Up().scale(-0.1)), diameter / 2, owner.scene)
-    const shape = new PhysicsShapeCylinder(new Vector3(0,-0.1,0), new Vector3(0,0.1,0), diameter * 0.5 , owner.scene)
+    const shape = new PhysicsShapeCylinder(new Vector3(0,-0.02,0), new Vector3(0,0.02,0), diameter * 0.5 , owner.scene)
     
     shape.material =  {friction:Constants.bumperFriction, restitution: Constants.bumperRestitution};
     shape.filterMembershipMask = CollisionMask.Bumper
