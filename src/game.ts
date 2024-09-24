@@ -70,7 +70,7 @@ export class Game implements IGame{
     const light = new HemisphericLight("light1", new Vector3(0, 1, 0), this.scene);
 
     // Default intensity is 1. Let's dim the light a small amount
-    light.intensity = 0.7;
+    light.intensity = 1.7;
 
     // Create a grid material
     this.material = new GridMaterial("grid", this.scene);

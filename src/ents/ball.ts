@@ -1,11 +1,12 @@
 import { AbstractMesh } from "@babylonjs/core/Meshes/abstractMesh";
 import { IEntity, IGame } from "../interfaces";
-import { Vector3 } from "@babylonjs/core/Maths/math";
+import { Color3, Vector3 } from "@babylonjs/core/Maths/math";
 import { CreateIcoSphere } from "@babylonjs/core/Meshes/Builders/icoSphereBuilder"
 import { PhysicsBody, PhysicsMotionType, PhysicsShapeSphere } from "@babylonjs/core/Physics";
 import { CollisionMask, Constants } from "../constants";
 import { Material } from "@babylonjs/core/Materials/material";
 import { StandardMaterial } from "@babylonjs/core/Materials/standardMaterial";
+import { PBRMaterial } from "@babylonjs/core/Materials/PBR/pbrMaterial";
 
 
 export class Ball implements IEntity{
@@ -15,7 +16,7 @@ export class Ball implements IEntity{
 
 
   public constructor(readonly owner:IGame, position:Vector3){
-    this.rootMesh = CreateIcoSphere("ball", { radius:Constants.ballSize}, owner.scene)
+    this.rootMesh = CreateIcoSphere("ball", { flat:false,  radius:Constants.ballSize}, owner.scene)
     this.rootMesh.position.set(-position.x, position.y, position.z)
 
     const shape = new PhysicsShapeSphere(Vector3.Zero(), Constants.ballSize, owner.scene)
@@ -27,8 +28,13 @@ export class Ball implements IEntity{
     body.shape = shape
     body.setMassProperties({ mass: Constants.ballMass})
 
-    const mat = new StandardMaterial("ballmat", owner.scene)
-  
+    const mat = new  PBRMaterial("ballmat", owner.scene)
+    mat.albedoColor = Color3.White()
+    mat.metallic = 1.0
+    mat.metallicF0Factor = 0.9
+    mat.metallicReflectanceColor = Color3.White()
+    mat.iridescence.isEnabled = true
+    // mat.metallicReflectanceTexture = new BABYLON.Texture("metReflectTex.png", scene);
     //mat.wireframe = true
     this.rootMesh.material = mat
 

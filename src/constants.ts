@@ -1,6 +1,6 @@
 
 export const Constants = {
-  tableTilt: 8,
+  tableTilt: 10,
   ballSize: 0.0135 ,
  //ballSize: 0.005 ,
   paddleMass: 3,
@@ -9,7 +9,7 @@ export const Constants = {
   ballRestitution: 0.2,
   launchBase: 12,
   launchVariance: 4,
-  ballTrack:false,
+  ballTrack:true,
   paddleTravel:0.3*Math.PI,
   floorRestitution:0.2,
   floorFriction:0.0001,
